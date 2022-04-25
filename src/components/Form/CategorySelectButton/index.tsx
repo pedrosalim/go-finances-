@@ -4,15 +4,16 @@ import * as S from "./styles";
 
 interface Props {
   title: string;
+  onPress: () => void;
 }
 
-const CategorySelect = ({ title }: Props) => {
+const CategorySelectButton = ({ title, onPress }: Props) => {
   return (
-    <S.Container>
+    <S.Container onPress={onPress}>
       <S.Category>{title}</S.Category>
       <S.Icon name="chevron-down" />
     </S.Container>
   );
 };
 
-export default CategorySelect;
+export default CategorySelectButton;

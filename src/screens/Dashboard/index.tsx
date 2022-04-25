@@ -10,7 +10,7 @@ export interface DataListProps extends TransactionCardProps {
   id: string;
 }
 
-export function Dashboard() {
+const Dashboard = () => {
   const data: DataListProps[] = [
     {
       id: "1",
@@ -53,7 +53,9 @@ export function Dashboard() {
             </S.User>
           </S.UserInfo>
 
-          <S.Icon name="power" />
+          <S.LogoutButton onPress={() => {}}>
+            <S.Icon name="power" />
+          </S.LogoutButton>
         </S.UserWrapper>
       </S.Header>
 
@@ -88,4 +90,6 @@ export function Dashboard() {
       </S.Transactions>
     </S.Container>
   );
-}
+};
+
+export default Dashboard;
