@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Modal } from "react-native";
 
 import TransactionTypeButton from "../../components/TransactionTypeButton";
 import CategorySelect from "../../components/Form/CategorySelect";
