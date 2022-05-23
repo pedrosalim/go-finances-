@@ -79,6 +79,7 @@ const Register = () => {
     async function loadData() {
       const data = await AsyncStorage.getItem(dataKey);
       console.log(JSON.parse(data!));
+      console.log("kbo");
     }
 
     loadData();
