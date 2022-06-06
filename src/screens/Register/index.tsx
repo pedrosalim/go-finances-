@@ -1,17 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Modal, TouchableWithoutFeedback, Keyboard, Alert } from "react-native";
 
 import CategorySelectButton from "../../components/Form/CategorySelectButton";
 import TransactionTypeButton from "../../components/TransactionTypeButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
 import InputForm from "../../components/Form/InputForm";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Button from "../../components/Form/Button";
 import CategorySelect from "../CategorySelect";
 import { useForm } from "react-hook-form";
+import uuid from "react-native-uuid";
 import * as Yup from "yup";
 
 import * as S from "./styles";
+
+type NavigationProps = {
+  navigate: (screen: string) => void;
+};
 
 interface FormData {
   name?: string;
@@ -33,11 +39,12 @@ const Register = () => {
     name: "Categoria",
   });
 
-  const dataKey = "@gofinances:transactions";
+  const navigation = useNavigation<NavigationProps>();
 
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
@@ -61,29 +68,36 @@ const Register = () => {
     if (category.key === "category")
       return Alert.alert("Selecione a categoria");
 
-    const data = {
+    const newTransaction = {
+      id: String(uuid.v4()),
       name: form.name,
       amount: form.amount,
       transactionType,
       category: category.key,
+      data: new Date(),
     };
     try {
-      await AsyncStorage.setItem(dataKey, JSON.stringify(data));
+      const dataKey = "@gofinances:transactions";
+
+      const data = await AsyncStorage.getItem(dataKey);
+      const currentData = data ? JSON.parse(data) : [];
+
+      const dataFormated = [...currentData, newTransaction];
+      await AsyncStorage.setItem(dataKey, JSON.stringify(dataFormated));
+
+      reset();
+      setTransactionType("");
+      setCategory({
+        key: "category",
+        name: "Categoria",
+      });
+
+      navigation.navigate("Listagem");
     } catch (error) {
       console.log(error);
       Alert.alert("Nao foi possivel cadastrar");
     }
   }
-
-  useEffect(() => {
-    async function loadData() {
-      const data = await AsyncStorage.getItem(dataKey);
-      console.log(JSON.parse(data!));
-      console.log("kbo");
-    }
-
-    loadData();
-  }, []);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
