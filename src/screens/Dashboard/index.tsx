@@ -27,13 +27,12 @@ const Dashboard = () => {
           currency: "BRL",
         });
 
-        // const date = Intl.DateTimeFormat("pt-BR", {
-        //   day: "2-digit",
-        //   month: "2-digit",
-        //   year: "2-digit",
-        // }).format(new Date(item.date));
-
-        const date = "2019/02/03";
+        console.log(dataKey);
+        const date = Intl.DateTimeFormat("pt-BR", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "2-digit",
+        }).format(new Date(item.date));
 
         return {
           id: item.id,
@@ -47,6 +46,10 @@ const Dashboard = () => {
     );
 
     setData(transactionsFormatted);
+  }
+
+  async function _clear() {
+    await AsyncStorage.clear();
   }
 
   useEffect(() => {
@@ -69,7 +72,7 @@ const Dashboard = () => {
             </S.User>
           </S.UserInfo>
 
-          <S.LogoutButton onPress={() => {}}>
+          <S.LogoutButton onPress={() => _clear()}>
             <S.Icon name="power" />
           </S.LogoutButton>
         </S.UserWrapper>

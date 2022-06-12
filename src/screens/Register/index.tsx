@@ -74,7 +74,7 @@ const Register = () => {
       amount: form.amount,
       transactionType,
       category: category.key,
-      data: new Date(),
+      date: new Date(),
     };
     try {
       const dataKey = "@gofinances:transactions";
